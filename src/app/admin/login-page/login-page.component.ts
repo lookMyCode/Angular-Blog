@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthService } from './../shared/services/auth.service';
 import { IUser } from './../../shared/interfaces';
 import { Component, OnInit } from '@angular/core';
@@ -12,13 +12,22 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class LoginPageComponent implements OnInit {
   form: FormGroup;
   submitted: boolean = false;
+  message: string;
 
   constructor(
     public auth: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.queryParams
+      .subscribe( (params: Params) => {
+        if (params.loginAgain) {
+          this.message = 'You have been logined';
+        }
+      } );
+
     this.form = new FormGroup({
       email: new FormControl(null, [
         Validators.required,
