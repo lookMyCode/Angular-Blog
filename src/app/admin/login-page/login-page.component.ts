@@ -25,6 +25,8 @@ export class LoginPageComponent implements OnInit {
       .subscribe( (params: Params) => {
         if (params.loginAgain) {
           this.message = 'You have been logined';
+        } else if (params.authFailed) {
+          this.message = 'Session expired. Please login again.';
         }
       } );
 
