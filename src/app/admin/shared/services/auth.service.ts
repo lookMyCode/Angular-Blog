@@ -9,7 +9,7 @@ import { catchError, tap } from 'rxjs/operators';
 @Injectable()
 
 export class AuthService {
-  error$: Subject<string> = new Subject<string>();
+  public error$: Subject<string> = new Subject<string>();
 
   constructor(
     private http: HttpClient
@@ -27,6 +27,7 @@ export class AuthService {
   }
 
   login(user: IUser): Observable<any> {
+    user.returnSecureToken = true;
     return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`, user)
       .pipe(
         tap(this.setToken),
@@ -57,7 +58,7 @@ export class AuthService {
         break;
     }
 
-    // throwError(err);
+    return throwError(err);
   }
 
   private setToken(res: IFbAuthResponse | null) {
